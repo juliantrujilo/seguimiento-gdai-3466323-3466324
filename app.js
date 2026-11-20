@@ -278,7 +278,7 @@ function leerHoja(archivo) {
 async function procesarCarga() {
   const aviso = $('cAviso'), decir = (t, c) => { aviso.className = 'aviso-caja ver ' + c; aviso.innerHTML = t; };
   const ficha = $('cFicha').value, aZ = $('cZajuna').files[0], aS = $('cSofia').files[0], aD = $('cDeser').files[0], clave = $('cClave').value;
-  if (!aZ && !aS) return decir('Seleccione al menos uno de los dos reportes.', 'mal');
+  if (!aZ && !aS && !aD) return decir('Seleccione al menos un reporte, o el listado de deserción para limpiar los datos ya cargados.', 'mal');
   if (CONFIG.SCRIPT_URL && !clave) return decir('Escriba la clave de administrador.', 'mal');
   $('cProcesar').disabled = true; decir('Procesando…', 'info');
   try {
@@ -312,7 +312,7 @@ async function procesarCarga() {
     let msj = `Listo: ${n} aprendices en formación en la ficha ${ficha}.` + (avisos.length ? '<br>• ' + avisos.map(esc).join('<br>• ') : '');
     if (CONFIG.SCRIPT_URL) {
       decir('Guardando en la hoja de Google…', 'info');
-      const resp = await fetch(CONFIG.SCRIPT_URL, { method: 'POST', body: JSON.stringify({ clave, ficha, zajuna, sofia }) });
+      const resp = await fetch(CONFIG.SCRIPT_URL, { method: 'POST', body: JSON.stringify({ clave, ficha, zajuna: zajuna || (excl ? E.crudo[ficha].zajuna : null), sofia: sofia || (excl ? E.crudo[ficha].sofia : null) }) });
       const d = await resp.json();
       if (d.estado !== 'ok') throw new Error('La hoja de Google rechazó la carga: ' + (d.mensaje || 'error desconocido') + '. Los datos quedaron solo en este navegador.');
       msj += '<br>Guardado en la hoja de Google: ya lo ven los aprendices.';
