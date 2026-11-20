@@ -3,10 +3,7 @@
 const CONFIG = {
   // Pegue aquí la URL de la aplicación web de Apps Script (termina en /exec). Vacía = solo este navegador.
   SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbx8WoWJC1aDg9MRGwjNh8tPFLgUTOKravexVsi1CHUp1q2dttvJiNEYjBKtjz3SdAowaQ/exec',
-  FICHAS: {
-    '3466323': { horario: 'Martes 7:30 p. m.' },
-    '3466324': { horario: 'Martes 8:30 p. m.' }
-  }
+  FICHAS: { '3466323': {}, '3466324': {} }
 };
 
 const CAT = Datos.CAT;
@@ -104,7 +101,7 @@ function comparativa() {
   let filas = '';
   Object.keys(CONFIG.FICHAS).forEach(n => {
     const f = E.fichas[n], t = Datos.avanceGrupo(f, gs);
-    filas += `<tr><td><b>${n}</b> <span style="color:var(--texto-3)">· ${esc(CONFIG.FICHAS[n].horario)}</span></td><td class="num">${(f.hayZ || f.hayS) ? t.n : '—'}</td><td class="num">${pc(t.zajuna)}</td><td class="num">${pc(t.sofia)}</td><td class="num">${(f.hayZ || f.hayS) ? t.alDia : '—'}</td><td>${fechas(f)}</td></tr>`;
+    filas += `<tr><td><b>${n}</b></td><td class="num">${(f.hayZ || f.hayS) ? t.n : '—'}</td><td class="num">${pc(t.zajuna)}</td><td class="num">${pc(t.sofia)}</td><td class="num">${(f.hayZ || f.hayS) ? t.alDia : '—'}</td><td>${fechas(f)}</td></tr>`;
   });
   return `<div class="card"><h2>Comparativa de fichas</h2><div class="sub">${E.guia === 'todas' ? 'Todas las guías' : 'Guía ' + E.guia}</div><div class="tabla-caja"><table><thead><tr><th>Ficha</th><th class="num">En formación</th><th class="num">Zajuna</th><th class="num">SOFIA</th><th class="num">Al día</th><th>Última carga</th></tr></thead><tbody>${filas}</tbody></table></div></div>`;
 }
